@@ -1,4 +1,4 @@
-INSERT INTO PATIENT (patient_id, first_name, last_name, date_of_birth, phone, email, street, city, state, zip_code, allergies) VALUES
+INSERT INTO PATIENT (PATIENT_ID, FIRST_NAME, LAST_NAME, DATE_OF_BIRTH, PHONE, EMAIL, STREET, CITY, STATE, ZIP_CODE, ALLERGIES) VALUES
 (1, 'James', 'Edwards', '2020-12-12', '6504102305', 'jgreene@example.net', '11909 Maria Locks Apt. 668', 'North Robert', 'KS', '77106', 'Aspirin'),
 (2, 'Christine', 'Suarez', '1942-03-07', '9872769639', 'timothy99@example.org', '395 Miles Estates Apt. 811', 'Hernandezfurt', 'MA', '53017', 'Peanuts'),
 (3, 'Karen', 'Taylor', '2008-05-16', '9934120097', 'marymason@example.net', '59342 Doyle Points Suite 003', 'Lake Stanley', 'DE', '97729', 'Ibuprofen'),
