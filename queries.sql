@@ -52,7 +52,6 @@ JOIN inventory i
 GROUP BY i.medication_name
 ORDER BY "Average Quantity" DESC;
 
--- aaron's queries
 -- lists the distinct allergy types across all patients
 SELECT DISTINCT allergies
 FROM patient
@@ -60,6 +59,14 @@ WHERE allergies IS NOT NULL AND allergies  != 'None'
 ORDER BY allergies;
 
 -- make a subquerey where we list patients who have never had a prescription filled
+SELECT CONCAT(p.first_name, ' ', p.last_name) AS "Patient Name",
+pr.prescription_id, pr.status
+FROM patient p
+JOIN prescription pr ON p.patient_id = pr.patient_id
+WHERE pr.prescription_id NOT IN (
+	SELECT DISTINCT prescription_id FROM fills
+)
+ORDER BY "Patient Name";
 
 -- find all patients who have been presrcibed a certain medication 
 SELECT DISTINCT p.patient_id, CONCAT(p.first_name, ' ', p.last_name) AS "Patient Name"
