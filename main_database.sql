@@ -11,141 +11,141 @@ CREATE DATABASE pharmatrack;
 USE pharmatrack;
 
 -- ============================================================
--- TABLE 1: DOCTOR
+-- TABLE 1: doctor
 -- Stores prescribing doctors and their contact/clinic info.
 -- ============================================================
-CREATE TABLE DOCTOR (
-    DOCTOR_ID       INT             AUTO_INCREMENT PRIMARY KEY,
-    FIRST_NAME      VARCHAR(50)     NOT NULL,
-    LAST_NAME       VARCHAR(50)     NOT NULL,
-    LICENSE_NUMBER  VARCHAR(20)     NOT NULL UNIQUE,
-    PHONE           VARCHAR(15)     NOT NULL,
-    EMAIL           VARCHAR(100),
-    CLINIC_NAME     VARCHAR(100)
+CREATE TABLE doctor (
+    doctor_id       INT             AUTO_INCREMENT PRIMARY KEY,
+    first_name      VARCHAR(50)     NOT NULL,
+    last_name       VARCHAR(50)     NOT NULL,
+    license_number  VARCHAR(20)     NOT NULL UNIQUE,
+    phone           VARCHAR(15)     NOT NULL,
+    email           VARCHAR(100),
+    clinic_name     VARCHAR(100)
 );
 
 -- ============================================================
--- TABLE 2: PATIENT
+-- TABLE 2: patient
 -- Stores patient demographics, contact info, and allergies.
 -- ============================================================
-CREATE TABLE PATIENT (
-    PATIENT_ID      INT             AUTO_INCREMENT PRIMARY KEY,
-    FIRST_NAME      VARCHAR(50)     NOT NULL,
-    LAST_NAME       VARCHAR(50)     NOT NULL,
-    DATE_OF_BIRTH   DATE            NOT NULL,
-    PHONE           VARCHAR(15)     NOT NULL,
-    EMAIL           VARCHAR(100),
-    STREET          VARCHAR(100),
-    CITY            VARCHAR(50),
-    STATE           CHAR(2),
-    ZIP_CODE        VARCHAR(10),
-    ALLERGIES       TEXT            -- NULL means no known allergies
+CREATE TABLE patient (
+    patient_id      INT             AUTO_INCREMENT PRIMARY KEY,
+    first_name      VARCHAR(50)     NOT NULL,
+    last_name       VARCHAR(50)     NOT NULL,
+    date_of_birth   DATE            NOT NULL,
+    phone           VARCHAR(15)     NOT NULL,
+    email           VARCHAR(100),
+    street          VARCHAR(100),
+    city            VARCHAR(50),
+    state           CHAR(2),
+    zip_code        VARCHAR(10),
+    allergies       TEXT            -- NULL means no known allergies
 );
 
 -- ============================================================
--- TABLE 3: PHARMACIST
+-- TABLE 3: pharmacist
 -- Stores licensed pharmacists who process prescription fills.
 -- ============================================================
-CREATE TABLE PHARMACIST (
-    PHARMACIST_ID   INT             AUTO_INCREMENT PRIMARY KEY,
-    FIRST_NAME      VARCHAR(50)     NOT NULL,
-    LAST_NAME       VARCHAR(50)     NOT NULL,
-    LICENSE_NUMBER  VARCHAR(20)     NOT NULL UNIQUE,
-    PHONE           VARCHAR(15)     NOT NULL,
-    EMAIL           VARCHAR(100)
+CREATE TABLE pharmacist (
+    pharmacist_id   INT             AUTO_INCREMENT PRIMARY KEY,
+    first_name      VARCHAR(50)     NOT NULL,
+    last_name       VARCHAR(50)     NOT NULL,
+    license_number  VARCHAR(20)     NOT NULL UNIQUE,
+    phone           VARCHAR(15)     NOT NULL,
+    email           VARCHAR(100)
 );
 
 -- ============================================================
--- TABLE 4: INVENTORY
+-- TABLE 4: inventory
 -- Master catalog of medications tracked by the pharmacy.
--- NDC_CODE (National Drug Code) is unique per medication type.
+-- ndc_code (National Drug Code) is unique per medication type.
 -- ============================================================
-CREATE TABLE INVENTORY (
-    INVENTORY_ID    INT             AUTO_INCREMENT PRIMARY KEY,
-    MEDICATION_NAME VARCHAR(100)    NOT NULL,
-    NDC_CODE        VARCHAR(20)     NOT NULL UNIQUE,
-    GENERIC_NAME    VARCHAR(100),
-    DOSAGE_FORM     VARCHAR(50),    -- e.g., Tablet, Capsule, Liquid
-    STRENGTH        VARCHAR(50)     -- e.g., 500mg, 10mg/5mL
+CREATE TABLE inventory (
+    inventory_id    INT             AUTO_INCREMENT PRIMARY KEY,
+    medication_name VARCHAR(100)    NOT NULL,
+    ndc_code        VARCHAR(20)     NOT NULL UNIQUE,
+    generic_name    VARCHAR(100),
+    dosage_form     VARCHAR(50),    -- e.g., Tablet, Capsule, Liquid
+    strength        VARCHAR(50)     -- e.g., 500mg, 10mg/5mL
 );
 
 -- ============================================================
--- TABLE 5: MEDICATION
+-- TABLE 5: medication
 -- Represents specific physical stock of a medication.
--- Each row is a unique lot tied to an INVENTORY entry.
+-- Each row is a unique lot tied to an inventory entry.
 -- ============================================================
-CREATE TABLE MEDICATION (
-    MEDICATION_ID       INT             AUTO_INCREMENT PRIMARY KEY,
-    INVENTORY_ID        INT             NOT NULL,
-    LOT_NUMBER          VARCHAR(50)     NOT NULL,
-    EXPIRATION_DATE     DATE            NOT NULL,
-    QUANTITY_IN_STOCK   INT             NOT NULL DEFAULT 0,
-    UNIT_PRICE          DECIMAL(10,2)   NOT NULL,
-    MANUFACTURER        VARCHAR(100),
+CREATE TABLE medication (
+    medication_id       INT             AUTO_INCREMENT PRIMARY KEY,
+    inventory_id        INT             NOT NULL,
+    lot_number          VARCHAR(50)     NOT NULL,
+    expiration_date     DATE            NOT NULL,
+    quantity_in_stock   INT             NOT NULL DEFAULT 0,
+    unit_price          DECIMAL(10,2)   NOT NULL,
+    manufacturer        VARCHAR(100),
 
     CONSTRAINT fk_medication_inventory
-        FOREIGN KEY (INVENTORY_ID) REFERENCES INVENTORY(INVENTORY_ID)
+        FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id)
 );
 
 -- ============================================================
--- TABLE 6: PRESCRIPTION
+-- TABLE 6: prescription
 -- Represents a prescription issued by a doctor for a patient.
--- STATUS values: 'Active', 'Filled', 'Expired', 'Cancelled'
+-- status values: 'Active', 'Filled', 'Expired', 'Cancelled'
 -- ============================================================
-CREATE TABLE PRESCRIPTION (
-    PRESCRIPTION_ID     INT             AUTO_INCREMENT PRIMARY KEY,
-    DOCTOR_ID           INT             NOT NULL,
-    PATIENT_ID          INT             NOT NULL,
-    DATE_ISSUED         DATE            NOT NULL,
-    REFILLS_REMAINING   INT             NOT NULL DEFAULT 0,
-    STATUS              VARCHAR(20)     NOT NULL DEFAULT 'Active',
+CREATE TABLE prescription (
+    prescription_id     INT             AUTO_INCREMENT PRIMARY KEY,
+    doctor_id           INT             NOT NULL,
+    patient_id          INT             NOT NULL,
+    date_issued         DATE            NOT NULL,
+    refills_remaining   INT             NOT NULL DEFAULT 0,
+    status              VARCHAR(20)     NOT NULL DEFAULT 'Active',
 
     CONSTRAINT fk_prescription_doctor
-        FOREIGN KEY (DOCTOR_ID) REFERENCES DOCTOR(DOCTOR_ID),
+        FOREIGN KEY (doctor_id) REFERENCES doctor(doctor_id),
     CONSTRAINT fk_prescription_patient
-        FOREIGN KEY (PATIENT_ID) REFERENCES PATIENT(PATIENT_ID)
+        FOREIGN KEY (patient_id) REFERENCES patient(patient_id)
 );
 
 -- ============================================================
--- TABLE 7: PRESCRIPTION_LINE (Junction Table)
--- Resolves the M:N relationship between PRESCRIPTION and MEDICATION.
+-- TABLE 7: prescription_line (Junction Table)
+-- Resolves the M:N relationship between prescription and medication.
 -- Each row = one medication on a given prescription.
--- Composite PK: (PRESCRIPTION_ID, MEDICATION_ID)
+-- Composite PK: (prescription_id, medication_id)
 -- ============================================================
-CREATE TABLE PRESCRIPTION_LINE (
-    PRESCRIPTION_ID     INT             NOT NULL,
-    MEDICATION_ID       INT             NOT NULL,
-    QUANTITY_PRESCRIBED INT             NOT NULL,
-    DOSAGE_INSTRUCTIONS VARCHAR(255),
+CREATE TABLE prescription_line (
+    prescription_id     INT             NOT NULL,
+    medication_id       INT             NOT NULL,
+    quantity_prescribed INT             NOT NULL,
+    dosage_instructions VARCHAR(255),
 
-    PRIMARY KEY (PRESCRIPTION_ID, MEDICATION_ID),
+    PRIMARY KEY (prescription_id, medication_id),
 
     CONSTRAINT fk_pl_prescription
-        FOREIGN KEY (PRESCRIPTION_ID) REFERENCES PRESCRIPTION(PRESCRIPTION_ID),
+        FOREIGN KEY (prescription_id) REFERENCES prescription(prescription_id),
     CONSTRAINT fk_pl_medication
-        FOREIGN KEY (MEDICATION_ID) REFERENCES MEDICATION(MEDICATION_ID)
+        FOREIGN KEY (medication_id) REFERENCES medication(medication_id)
 );
 
 -- ============================================================
--- TABLE 8: FILLS (Associative Entity)
--- Resolves the M:N relationship between PRESCRIPTION and PHARMACIST.
+-- TABLE 8: fills (Associative Entity)
+-- Resolves the M:N relationship between prescription and pharmacist.
 -- Tracks each individual fill event (original + refills).
 -- ============================================================
-CREATE TABLE FILLS (
-    FILLS_ID            INT             AUTO_INCREMENT PRIMARY KEY,
-    PRESCRIPTION_ID     INT             NOT NULL,
-    PHARMACIST_ID       INT             NOT NULL,
-    FILLS_DATE          DATE            NOT NULL,
-    FILL_NUMBER         INT             NOT NULL DEFAULT 1,
-    NOTES               TEXT,
+CREATE TABLE fills (
+    fills_id            INT             AUTO_INCREMENT PRIMARY KEY,
+    prescription_id     INT             NOT NULL,
+    pharmacist_id       INT             NOT NULL,
+    fills_date          DATE            NOT NULL,
+    fill_number         INT             NOT NULL DEFAULT 1,
+    notes               TEXT,
 
     CONSTRAINT fk_fills_prescription
-        FOREIGN KEY (PRESCRIPTION_ID) REFERENCES PRESCRIPTION(PRESCRIPTION_ID),
+        FOREIGN KEY (prescription_id) REFERENCES prescription(prescription_id),
     CONSTRAINT fk_fills_pharmacist
-        FOREIGN KEY (PHARMACIST_ID) REFERENCES PHARMACIST(PHARMACIST_ID)
+        FOREIGN KEY (pharmacist_id) REFERENCES pharmacist(pharmacist_id)
 );
 
-INSERT INTO INVENTORY (INVENTORY_ID, MEDICATION_NAME, NDC_CODE, GENERIC_NAME, DOSAGE_FORM, STRENGTH) VALUES
+INSERT INTO inventory (inventory_id, medication_name, ndc_code, generic_name, dosage_form, strength) VALUES
 (1, 'TYLENOL', '50580-488-01', 'ACETAMINOPHEN', 'TABLET', '500MG'),
 (2, 'ADVIL', '0573-0164-30', 'IBUPROFEN', 'TABLET', '200MG'),
 (3, 'AMOXIL', '00093-2260-01', 'AMOXICILLIN', 'CAPSULE', '500MG'),
@@ -197,7 +197,7 @@ INSERT INTO INVENTORY (INVENTORY_ID, MEDICATION_NAME, NDC_CODE, GENERIC_NAME, DO
 (49, 'ALBUTEROL', '00093-7461-01', 'ALBUTEROL', 'INHALER', '90MCG'),
 (50, 'VENTOLIN', '00093-7462-01', 'ALBUTEROL', 'INHALER', '90MCG');
 
-INSERT INTO MEDICATION (MEDICATION_ID, LOT_NUMBER, EXPIRATION_DATE, QUANTITY_IN_STOCK, UNIT_PRICE, MANUFACTURER, INVENTORY_ID) VALUES
+INSERT INTO medication (medication_id, lot_number, expiration_date, quantity_in_stock, unit_price, manufacturer, inventory_id) VALUES
 (1, '001', '2027-05-12', 150, 8.99, 'Pfizer', 1),
 (2, '002', '2026-11-03', 200, 5.49, 'Johnson & Johnson', 2),
 (3, '003', '2028-01-20', 120, 12.75, 'Merck', 3),
@@ -249,7 +249,7 @@ INSERT INTO MEDICATION (MEDICATION_ID, LOT_NUMBER, EXPIRATION_DATE, QUANTITY_IN_
 (49, '049', '2027-12-03', 210, 10.95, 'Pfizer', 49),
 (50, '050', '2028-04-18', 170, 19.25, 'Amgen', 50);
 
-INSERT INTO PHARMACIST (PHARMACIST_ID, FIRST_NAME, LAST_NAME, LICENSE_NUMBER, PHONE, EMAIL) VALUES
+INSERT INTO pharmacist (pharmacist_id, first_name, last_name, license_number, phone, email) VALUES
 (1, 'Pamela', 'House', 'TX-RPH-5501', '9565551001', 'phouse@pharmatrack.com'),
 (2, 'Belinda', 'Peters', 'TX-RPH-5502', '9565551002', 'bpeters@pharmatrack.com'),
 (3, 'Brenda', 'Johnson', 'TX-RPH-5503', '9565551003', 'bjohnson@pharmatrack.com'),
@@ -271,7 +271,7 @@ INSERT INTO PHARMACIST (PHARMACIST_ID, FIRST_NAME, LAST_NAME, LICENSE_NUMBER, PH
 (19, 'Michelle', 'King', 'TX-RPH-5519', '9565551019', 'mking@pharmatrack.com'),
 (20, 'Robert', 'Smith', 'TX-RPH-5520', '9565551020', 'rsmith@pharmatrack.com');
 
-INSERT INTO DOCTOR (DOCTOR_ID, FIRST_NAME, LAST_NAME, LICENSE_NUMBER, PHONE, EMAIL, CLINIC_NAME) VALUES
+INSERT INTO doctor (doctor_id, first_name, last_name, license_number, phone, email, clinic_name) VALUES
 (1, 'John', 'Craig', 'TX-MD-10021', '2105554821', 'jcraig@alamoheightsclinic.com', 'Alamo Heights Family Clinic'),
 (2, 'Eric', 'Fisher', 'TX-MD-10022', '5125559034', 'efisher@lonestarmedical.org', 'Lone Star Medical Center'),
 (3, 'Ryan', 'Adams', 'TX-MD-10023', '2815557762', 'radams@sanmarcoshealth.org', 'San Marcos Community Health'),
@@ -293,7 +293,7 @@ INSERT INTO DOCTOR (DOCTOR_ID, FIRST_NAME, LAST_NAME, LICENSE_NUMBER, PHONE, EMA
 (19, 'Cheryl', 'Ford', 'TX-MD-10039', '2545559932', 'cford@mesquitespringshealth.com', 'Mesquite Springs Health Clinic'),
 (20, 'Andrew', 'Patrick', 'TX-MD-10040', '9155557714', 'apatrick@windcrestfamilycare.org', 'Windcrest Family Care');
 
-INSERT INTO PATIENT (PATIENT_ID, FIRST_NAME, LAST_NAME, DATE_OF_BIRTH, PHONE, EMAIL, STREET, CITY, STATE, ZIP_CODE, ALLERGIES) VALUES
+INSERT INTO patient (patient_id, first_name, last_name, date_of_birth, phone, email, street, city, state, zip_code, allergies) VALUES
 (1, 'Kevin', 'Browning', '2016-01-28', '8063300190', 'kevin.browning@gmail.com', '715 David Stream Apt. 032', 'Amarillo', 'TX', '79101', 'Shellfish'),
 (2, 'Jennifer', 'Sloan', '1937-10-22', '3618088296', 'jennifer.sloan@hotmail.com', '05393 Hurst Isle Suite 214', 'Corpus Christi', 'TX', '78401', 'Grass'),
 (3, 'Robert', 'Green', '1937-09-28', '7137291248', 'robert.green@gmail.com', '61042 Brandon Way Suite 342', 'Houston', 'TX', '77001', 'None'),
@@ -498,23 +498,23 @@ INSERT INTO PATIENT (PATIENT_ID, FIRST_NAME, LAST_NAME, DATE_OF_BIRTH, PHONE, EM
 -- ============================================================
 -- PharmaTrack: Prescription Data Insert
 -- File: insert_prescription.sql
--- Tables: PRESCRIPTION, PRESCRIPTION_LINE, FILLS
+-- Tables: prescription, prescription_line, fills
 -- Notes:
---   - DOCTOR_ID range:      1–20
---   - PATIENT_ID range:     1–200
---   - MEDICATION_ID range:  1–50
---   - PHARMACIST_ID range:  1–20
+--   - doctor_id range:      1–20
+--   - patient_id range:     1–200
+--   - medication_id range:  1–50
+--   - pharmacist_id range:  1–20
 --   - Allergy conflicts avoided (Ibuprofen→MED 2, Acetaminophen→MED 1,
 --     Penicillin→MED 48 & MED 3)
---   - STATUS values: 'Active', 'Filled', 'Expired', 'Cancelled'
+--   - status values: 'Active', 'Filled', 'Expired', 'Cancelled'
 -- ============================================================
 
 USE pharmatrack;
 
 -- ============================================================
--- PRESCRIPTION (50 records)
+-- prescription (50 records)
 -- ============================================================
-INSERT INTO PRESCRIPTION (PRESCRIPTION_ID, DOCTOR_ID, PATIENT_ID, DATE_ISSUED, REFILLS_REMAINING, STATUS) VALUES
+INSERT INTO prescription (prescription_id, doctor_id, patient_id, date_issued, refills_remaining, status) VALUES
 (1,   1,  1,  '2025-01-15', 2, 'Active'),
 (2,   2,  2,  '2025-02-20', 0, 'Filled'),
 (3,   3,  3,  '2025-03-10', 1, 'Active'),
@@ -567,7 +567,7 @@ INSERT INTO PRESCRIPTION (PRESCRIPTION_ID, DOCTOR_ID, PATIENT_ID, DATE_ISSUED, R
 (50,  10, 50, '2025-10-10', 2, 'Active');
 
 -- ============================================================
--- PRESCRIPTION_LINE (~90 records)
+-- prescription_line (~90 records)
 -- Allergy notes per patient referenced below:
 --   Pt  2 (Grass),  Pt  4 (Aspirin), Pt  5 (Ibuprofen→avoid MED 2),
 --   Pt 11 (Ibuprofen→avoid MED 2), Pt 12 (Penicillin→avoid MED 3,48),
@@ -578,7 +578,7 @@ INSERT INTO PRESCRIPTION (PRESCRIPTION_ID, DOCTOR_ID, PATIENT_ID, DATE_ISSUED, R
 --   Pt 39 (Acetaminophen→avoid MED 1), Pt 49 (Ibuprofen→avoid MED 2),
 --   Pt 50 (Acetaminophen→avoid MED 1)
 -- ============================================================
-INSERT INTO PRESCRIPTION_LINE (PRESCRIPTION_ID, MEDICATION_ID, QUANTITY_PRESCRIBED, DOSAGE_INSTRUCTIONS) VALUES
+INSERT INTO prescription_line (prescription_id, medication_id, quantity_prescribed, dosage_instructions) VALUES
 -- Rx 1 – Pt 1 (Shellfish): Lisinopril + Atorvastatin
 (1,  4,  30, 'Take 1 tablet daily for blood pressure'),
 (1,  6,  30, 'Take 1 tablet daily in the evening for cholesterol'),
@@ -759,7 +759,7 @@ INSERT INTO PRESCRIPTION_LINE (PRESCRIPTION_ID, MEDICATION_ID, QUANTITY_PRESCRIB
 (50, 38, 30, 'Take 1 tablet daily for heart rate');
 
 -- ============================================================
--- FILLS
+-- fills
 -- Fill records exist for all non-Cancelled prescriptions.
 -- Cancelled RxIDs (no fills): 7, 19, 31, 47
 -- Expired RxIDs may have had fills before expiration: 4, 12, 24, 42
@@ -767,8 +767,8 @@ INSERT INTO PRESCRIPTION_LINE (PRESCRIPTION_ID, MEDICATION_ID, QUANTITY_PRESCRIB
 --   1, 3, 5, 8, 10, 13, 15, 17, 20, 22, 25, 27, 29, 32, 34, 36,
 --   37, 39, 40, 43, 45, 48, 50
 -- ============================================================
-INSERT INTO FILLS (PRESCRIPTION_ID, PHARMACIST_ID, FILLS_DATE, FILL_NUMBER, NOTES) VALUES
--- Filled prescriptions (STATUS = 'Filled')
+INSERT INTO fills (prescription_id, pharmacist_id, fills_date, fill_number, notes) VALUES
+-- Filled prescriptions (status = 'Filled')
 (2,   3,  '2025-02-21', 1, 'Original fill dispensed'),
 (6,   7,  '2025-05-13', 1, 'Original fill dispensed'),
 (9,   1,  '2025-07-08', 1, 'Patient counseled on inhaler technique'),

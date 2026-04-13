@@ -1,4 +1,121 @@
-INSERT INTO PATIENT (PATIENT_ID, FIRST_NAME, LAST_NAME, DATE_OF_BIRTH, PHONE, EMAIL, STREET, CITY, STATE, ZIP_CODE, ALLERGIES) VALUES
+-- ============================================================
+-- PharmaTrack: Combined Insert File
+-- Tables inserted in dependency order:
+--   inventory → doctor → pharmacist → patient →
+--   medication → prescription → prescription_line → fills
+-- ============================================================
+
+USE pharmatrack;
+
+-- ============================================================
+-- inventory (50 rows)
+-- ============================================================
+INSERT INTO inventory (inventory_id, medication_name, ndc_code, generic_name, dosage_form, strength) VALUES
+(1, 'TYLENOL', '50580-488-01', 'ACETAMINOPHEN', 'TABLET', '500MG'),
+(2, 'ADVIL', '0573-0164-30', 'IBUPROFEN', 'TABLET', '200MG'),
+(3, 'AMOXIL', '00093-2260-01', 'AMOXICILLIN', 'CAPSULE', '500MG'),
+(4, 'PRINIVIL', '00006-0273-82', 'LISINOPRIL', 'TABLET', '10MG'),
+(5, 'GLUCOPHAGE', '00093-1045-01', 'METFORMIN', 'TABLET', '500MG'),
+(6, 'LIPITOR', '00071-0155-23', 'ATORVASTATIN', 'TABLET', '20MG'),
+(7, 'NORVASC', '00071-0156-23', 'AMLODIPINE', 'TABLET', '5MG'),
+(8, 'LOSARTAN', '00093-7146-01', 'LOSARTAN', 'TABLET', '50MG'),
+(9, 'SYNTHROID', '00006-0070-61', 'LEVOTHYROXINE', 'TABLET', '50MCG'),
+(10, 'ZESTRIL', '00006-0273-83', 'LISINOPRIL', 'TABLET', '20MG'),
+(11, 'PLAVIX', '00093-7424-01', 'CLOPIDOGREL', 'TABLET', '75MG'),
+(12, 'COUMADIN', '00093-0128-01', 'WARFARIN', 'TABLET', '5MG'),
+(13, 'PRILOSEC', '00093-7425-01', 'OMEPRAZOLE', 'CAPSULE', '20MG'),
+(14, 'PROZAC', '00093-7426-01', 'FLUOXETINE', 'CAPSULE', '20MG'),
+(15, 'ZOLOFT', '00093-7427-01', 'SERTRALINE', 'TABLET', '50MG'),
+(16, 'LEXAPRO', '00093-7428-01', 'ESCITALOPRAM', 'TABLET', '10MG'),
+(17, 'CELEXA', '00093-7429-01', 'CITALOPRAM', 'TABLET', '20MG'),
+(18, 'ABILIFY', '00093-7430-01', 'ARIPIPRAZOLE', 'TABLET', '5MG'),
+(19, 'SEROQUEL', '00093-7431-01', 'QUETIAPINE', 'TABLET', '25MG'),
+(20, 'XANAX', '00093-7432-01', 'ALPRAZOLAM', 'TABLET', '0.5MG'),
+(21, 'VALIUM', '00093-7433-01', 'DIAZEPAM', 'TABLET', '5MG'),
+(22, 'ATIVAN', '00093-7434-01', 'LORAZEPAM', 'TABLET', '1MG'),
+(23, 'TRAMADOL', '00093-7435-01', 'TRAMADOL', 'TABLET', '50MG'),
+(24, 'VICODIN', '00093-7436-01', 'HYDROCODONE', 'TABLET', '5MG'),
+(25, 'PERCOCET', '00093-7437-01', 'OXYCODONE', 'TABLET', '5MG'),
+(26, 'NEURONTIN', '00093-7438-01', 'GABAPENTIN', 'CAPSULE', '300MG'),
+(27, 'LYRICA', '00093-7439-01', 'PREGABALIN', 'CAPSULE', '75MG'),
+(28, 'CYMBALTA', '00093-7440-01', 'DULOXETINE', 'CAPSULE', '60MG'),
+(29, 'EFFEXOR', '00093-7441-01', 'VENLAFAXINE', 'TABLET', '75MG'),
+(30, 'WELLBUTRIN', '00093-7442-01', 'BUPROPION', 'TABLET', '150MG'),
+(31, 'INSULIN', '00093-7443-01', 'INSULIN GLARGINE', 'INJECTION', '100U/ML'),
+(32, 'HUMALOG', '00093-7444-01', 'INSULIN LISPRO', 'INJECTION', '100U/ML'),
+(33, 'NOVOLOG', '00093-7445-01', 'INSULIN ASPART', 'INJECTION', '100U/ML'),
+(34, 'LASIX', '00093-7446-01', 'FUROSEMIDE', 'TABLET', '40MG'),
+(35, 'HYDRODIURIL', '00093-7447-01', 'HYDROCHLOROTHIAZIDE', 'TABLET', '25MG'),
+(36, 'ALDACTONE', '00093-7448-01', 'SPIRONOLACTONE', 'TABLET', '25MG'),
+(37, 'COREG', '00093-7449-01', 'CARVEDILOL', 'TABLET', '12.5MG'),
+(38, 'TOPROL', '00093-7450-01', 'METOPROLOL', 'TABLET', '50MG'),
+(39, 'PROPRANOLOL', '00093-7451-01', 'PROPRANOLOL', 'TABLET', '40MG'),
+(40, 'DIGOXIN', '00093-7452-01', 'DIGOXIN', 'TABLET', '0.25MG'),
+(41, 'PREDNISONE', '00093-7453-01', 'PREDNISONE', 'TABLET', '10MG'),
+(42, 'METHYLPREDNISOLONE', '00093-7454-01', 'METHYLPREDNISOLONE', 'TABLET', '4MG'),
+(43, 'AZITHROMYCIN', '00093-7455-01', 'AZITHROMYCIN', 'TABLET', '250MG'),
+(44, 'CIPRO', '00093-7456-01', 'CIPROFLOXACIN', 'TABLET', '500MG'),
+(45, 'LEVAQUIN', '00093-7457-01', 'LEVOFLOXACIN', 'TABLET', '500MG'),
+(46, 'DOXYCYCLINE', '00093-7458-01', 'DOXYCYCLINE', 'CAPSULE', '100MG'),
+(47, 'CLINDAMYCIN', '00093-7459-01', 'CLINDAMYCIN', 'CAPSULE', '300MG'),
+(48, 'PENICILLIN', '00093-7460-01', 'PENICILLIN V', 'TABLET', '500MG'),
+(49, 'ALBUTEROL', '00093-7461-01', 'ALBUTEROL', 'INHALER', '90MCG'),
+(50, 'VENTOLIN', '00093-7462-01', 'ALBUTEROL', 'INHALER', '90MCG');
+
+-- ============================================================
+-- doctor (20 rows)
+-- ============================================================
+INSERT INTO doctor (doctor_id, first_name, last_name, license_number, phone, email, clinic_name) VALUES
+(1, 'John', 'Craig', 'TX-MD-10021', '2105554821', 'jcraig@alamoheightsclinic.com', 'Alamo Heights Family Clinic'),
+(2, 'Eric', 'Fisher', 'TX-MD-10022', '5125559034', 'efisher@lonestarmedical.org', 'Lone Star Medical Center'),
+(3, 'Ryan', 'Adams', 'TX-MD-10023', '2815557762', 'radams@sanmarcoshealth.org', 'San Marcos Community Health'),
+(4, 'Kimberly', 'Garcia', 'TX-MD-10024', '2145551198', 'kgarcia@hillcountrywellness.com', 'Hill Country Wellness Clinic'),
+(5, 'Larry', 'Perry', 'TX-MD-10025', '7135556405', 'lperry@riograndevalleycare.org', 'Rio Grande Valley Care Center'),
+(6, 'Christopher', 'Sanders', 'TX-MD-10026', '4695557320', 'csanders@bluebonnetfamilypractice.com', 'Bluebonnet Family Practice'),
+(7, 'Rose', 'Chapman', 'TX-MD-10027', '8305554471', 'rchapman@cypresscreekmedgroup.com', 'Cypress Creek Medical Group'),
+(8, 'Carolyn', 'Nicholson', 'TX-MD-10028', '9035552284', 'cnicholson@missiontrailprimary.com', 'Mission Trail Primary Care'),
+(9, 'Denise', 'Church', 'TX-MD-10029', '3255559910', 'dchurch@westlakehillshealth.com', 'Westlake Hills Health Clinic'),
+(10, 'Glenn', 'Hobbs', 'TX-MD-10030', '4095555632', 'ghobbs@southtexasregional.org', 'South Texas Regional Clinic'),
+(11, 'Brandy', 'Shaw', 'TX-MD-10031', '9565558740', 'bshaw@pecangrovemedical.com', 'Pecan Grove Medical Associates'),
+(12, 'Anthony', 'Taylor', 'TX-MD-10032', '9405553159', 'ataylor@northaustinfamilyhealth.com', 'North Austin Family Health'),
+(13, 'Isaiah', 'Fisher', 'TX-MD-10033', '6825557044', 'ifisher@trinityrivermedical.org', 'Trinity River Medical Clinic'),
+(14, 'Sandra', 'Brown', 'TX-MD-10034', '7375551289', 'sbrown@cedarparkprimarycare.com', 'Cedar Park Primary Care'),
+(15, 'Brittney', 'Foster', 'TX-MD-10035', '8065559023', 'bfoster@brazosvalleyhealth.org', 'Brazos Valley Health Center'),
+(16, 'Sean', 'Woodard', 'TX-MD-10036', '3615554478', 'swoodard@pineridgefamilymed.com', 'Pine Ridge Family Medicine'),
+(17, 'Crystal', 'Smith', 'TX-MD-10037', '4325556601', 'csmith@friocountyclinic.org', 'Frio County Community Clinic'),
+(18, 'Bobby', 'Paul', 'TX-MD-10038', '9795552846', 'bpaul@guadaluperivermedical.com', 'Guadalupe River Medical Center'),
+(19, 'Cheryl', 'Ford', 'TX-MD-10039', '2545559932', 'cford@mesquitespringshealth.com', 'Mesquite Springs Health Clinic'),
+(20, 'Andrew', 'Patrick', 'TX-MD-10040', '9155557714', 'apatrick@windcrestfamilycare.org', 'Windcrest Family Care');
+
+-- ============================================================
+-- pharmacist (20 rows)
+-- ============================================================
+INSERT INTO pharmacist (pharmacist_id, first_name, last_name, license_number, phone, email) VALUES
+(1, 'Pamela', 'House', 'TX-RPH-5501', '9565551001', 'phouse@pharmatrack.com'),
+(2, 'Belinda', 'Peters', 'TX-RPH-5502', '9565551002', 'bpeters@pharmatrack.com'),
+(3, 'Brenda', 'Johnson', 'TX-RPH-5503', '9565551003', 'bjohnson@pharmatrack.com'),
+(4, 'Benjamin', 'Thomas', 'TX-RPH-5504', '9565551004', 'bthomas@pharmatrack.com'),
+(5, 'John', 'Williams', 'TX-RPH-5505', '9565551005', 'jwilliams@pharmatrack.com'),
+(6, 'Michelle', 'Mills', 'TX-RPH-5506', '9565551006', 'mmills@pharmatrack.com'),
+(7, 'Samantha', 'Perez', 'TX-RPH-5507', '9565551007', 'sperez@pharmatrack.com'),
+(8, 'Douglas', 'Simpson', 'TX-RPH-5508', '9565551008', 'dsimpson@pharmatrack.com'),
+(9, 'Stacy', 'Myers', 'TX-RPH-5509', '9565551009', 'smyers@pharmatrack.com'),
+(10, 'Matthew', 'Peters', 'TX-RPH-5510', '9565551010', 'mpeters@pharmatrack.com'),
+(11, 'Audrey', 'Watson', 'TX-RPH-5511', '9565551011', 'awatson@pharmatrack.com'),
+(12, 'Nicole', 'Crawford', 'TX-RPH-5512', '9565551012', 'ncrawford@pharmatrack.com'),
+(13, 'Timothy', 'Sullivan', 'TX-RPH-5513', '9565551013', 'tsullivan@pharmatrack.com'),
+(14, 'Charles', 'Barrett', 'TX-RPH-5514', '9565551014', 'cbarrett@pharmatrack.com'),
+(15, 'Kristina', 'Huff', 'TX-RPH-5515', '9565551015', 'khuff@pharmatrack.com'),
+(16, 'Melanie', 'Brown', 'TX-RPH-5516', '9565551016', 'mbrown@pharmatrack.com'),
+(17, 'Troy', 'Carter', 'TX-RPH-5517', '9565551017', 'tcarter@pharmatrack.com'),
+(18, 'Taylor', 'Miller', 'TX-RPH-5518', '9565551018', 'tmiller@pharmatrack.com'),
+(19, 'Michelle', 'King', 'TX-RPH-5519', '9565551019', 'mking@pharmatrack.com'),
+(20, 'Robert', 'Smith', 'TX-RPH-5520', '9565551020', 'rsmith@pharmatrack.com');
+
+-- ============================================================
+-- patient (200 rows)
+-- ============================================================
+INSERT INTO patient (patient_id, first_name, last_name, date_of_birth, phone, email, street, city, state, zip_code, allergies) VALUES
 (1, 'Kevin', 'Browning', '2016-01-28', '8063300190', 'kevin.browning@gmail.com', '715 David Stream Apt. 032', 'Amarillo', 'TX', '79101', 'Shellfish'),
 (2, 'Jennifer', 'Sloan', '1937-10-22', '3618088296', 'jennifer.sloan@hotmail.com', '05393 Hurst Isle Suite 214', 'Corpus Christi', 'TX', '78401', 'Grass'),
 (3, 'Robert', 'Green', '1937-09-28', '7137291248', 'robert.green@gmail.com', '61042 Brandon Way Suite 342', 'Houston', 'TX', '77001', 'None'),
@@ -199,3 +316,351 @@ INSERT INTO PATIENT (PATIENT_ID, FIRST_NAME, LAST_NAME, DATE_OF_BIRTH, PHONE, EM
 (198, 'Melissa', 'Hart', '1952-10-21', '2146054605', 'melissa.hart@gmail.com', '0214 Jessica Burgs', 'Dallas', 'TX', '75201', 'Peanuts'),
 (199, 'Jonathan', 'Bernard', '1980-01-27', '3616445939', 'jonathan.bernard@hotmail.com', '21780 Rodriguez Forks', 'Corpus Christi', 'TX', '78401', 'Ibuprofen'),
 (200, 'Stephen', 'Schultz', '1956-10-10', '8062450621', 'stephen.schultz@yahoo.com', '3395 Erin Points', 'Lubbock', 'TX', '79401', 'Ants');
+
+-- ============================================================
+-- medication (50 rows)
+-- ============================================================
+INSERT INTO medication (medication_id, lot_number, expiration_date, quantity_in_stock, unit_price, manufacturer, inventory_id) VALUES
+(1, '001', '2027-05-12', 150, 8.99, 'Pfizer', 1),
+(2, '002', '2026-11-03', 200, 5.49, 'Johnson & Johnson', 2),
+(3, '003', '2028-01-20', 120, 12.75, 'Merck', 3),
+(4, '004', '2027-08-15', 300, 3.99, 'Bayer', 4),
+(5, '005', '2026-06-10', 180, 6.25, 'Novartis', 5),
+(6, '006', '2027-12-01', 220, 9.99, 'Roche', 6),
+(7, '007', '2028-03-18', 140, 15.50, 'Sanofi', 7),
+(8, '008', '2026-09-25', 260, 4.75, 'AbbVie', 8),
+(9, '009', '2027-04-30', 175, 7.20, 'GSK', 9),
+(10, '010', '2028-07-11', 130, 11.80, 'Amgen', 10),
+(11, '011', '2027-02-14', 210, 10.25, 'Pfizer', 11),
+(12, '012', '2026-10-08', 190, 5.99, 'Merck', 12),
+(13, '013', '2028-05-22', 160, 14.40, 'Bayer', 13),
+(14, '014', '2027-09-13', 240, 6.75, 'Novartis', 14),
+(15, '015', '2026-12-29', 170, 8.10, 'Sanofi', 15),
+(16, '016', '2028-02-17', 150, 13.60, 'Roche', 16),
+(17, '017', '2027-06-05', 300, 4.20, 'AbbVie', 17),
+(18, '018', '2026-08-19', 280, 3.50, 'GSK', 18),
+(19, '019', '2027-11-27', 200, 9.40, 'Pfizer', 19),
+(20, '020', '2028-04-06', 145, 16.75, 'Amgen', 20),
+(21, '021', '2027-01-09', 230, 7.90, 'Johnson & Johnson', 21),
+(22, '022', '2026-07-23', 260, 5.60, 'Bayer', 22),
+(23, '023', '2028-06-14', 180, 18.30, 'Merck', 23),
+(24, '024', '2027-03-02', 210, 9.10, 'Novartis', 24),
+(25, '025', '2026-11-30', 195, 6.45, 'Sanofi', 25),
+(26, '026', '2028-08-21', 155, 20.00, 'Roche', 26),
+(27, '027', '2027-05-17', 175, 11.25, 'AbbVie', 27),
+(28, '028', '2026-09-09', 240, 4.95, 'GSK', 28),
+(29, '029', '2027-12-12', 220, 10.60, 'Pfizer', 29),
+(30, '030', '2028-02-28', 165, 17.80, 'Amgen', 30),
+(31, '031', '2027-04-03', 200, 8.35, 'Johnson & Johnson', 31),
+(32, '032', '2026-10-19', 210, 5.75, 'Bayer', 32),
+(33, '033', '2028-07-07', 150, 19.90, 'Merck', 33),
+(34, '034', '2027-01-25', 260, 7.80, 'Novartis', 34),
+(35, '035', '2026-06-18', 180, 6.95, 'Sanofi', 35),
+(36, '036', '2028-03-30', 140, 22.10, 'Roche', 36),
+(37, '037', '2027-08-08', 170, 12.40, 'AbbVie', 37),
+(38, '038', '2026-12-05', 230, 4.10, 'GSK', 38),
+(39, '039', '2027-09-21', 210, 9.85, 'Pfizer', 39),
+(40, '040', '2028-05-01', 160, 18.60, 'Amgen', 40),
+(41, '041', '2027-02-11', 190, 7.55, 'Johnson & Johnson', 41),
+(42, '042', '2026-08-27', 250, 5.20, 'Bayer', 42),
+(43, '043', '2028-06-03', 130, 21.75, 'Merck', 43),
+(44, '044', '2027-03-15', 200, 8.60, 'Novartis', 44),
+(45, '045', '2026-11-11', 220, 6.10, 'Sanofi', 45),
+(46, '046', '2028-01-29', 155, 23.50, 'Roche', 46),
+(47, '047', '2027-06-22', 180, 13.75, 'AbbVie', 47),
+(48, '048', '2026-09-14', 240, 4.65, 'GSK', 48),
+(49, '049', '2027-12-03', 210, 10.95, 'Pfizer', 49),
+(50, '050', '2028-04-18', 170, 19.25, 'Amgen', 50);
+
+-- ============================================================
+-- prescription (50 rows)
+-- ============================================================
+INSERT INTO prescription (prescription_id, doctor_id, patient_id, date_issued, refills_remaining, status) VALUES
+(1,   1,  1,  '2025-01-15', 2, 'Active'),
+(2,   2,  2,  '2025-02-20', 0, 'Filled'),
+(3,   3,  3,  '2025-03-10', 1, 'Active'),
+(4,   4,  4,  '2024-11-05', 0, 'Expired'),
+(5,   5,  5,  '2025-04-01', 3, 'Active'),
+(6,   6,  6,  '2025-05-12', 0, 'Filled'),
+(7,   7,  7,  '2024-12-20', 0, 'Cancelled'),
+(8,   8,  8,  '2025-06-18', 2, 'Active'),
+(9,   9,  9,  '2025-07-07', 0, 'Filled'),
+(10,  10, 10, '2025-08-14', 1, 'Active'),
+(11,  11, 11, '2025-09-22', 0, 'Filled'),
+(12,  12, 12, '2024-10-30', 0, 'Expired'),
+(13,  13, 13, '2025-10-05', 2, 'Active'),
+(14,  14, 14, '2025-11-11', 0, 'Filled'),
+(15,  15, 15, '2025-12-01', 5, 'Active'),
+(16,  16, 16, '2025-01-08', 0, 'Filled'),
+(17,  17, 17, '2025-02-14', 1, 'Active'),
+(18,  18, 18, '2025-03-25', 0, 'Filled'),
+(19,  19, 19, '2025-04-30', 0, 'Cancelled'),
+(20,  20, 20, '2025-05-17', 3, 'Active'),
+(21,   1, 21, '2025-06-05', 0, 'Filled'),
+(22,   2, 22, '2025-07-20', 2, 'Active'),
+(23,   3, 23, '2025-08-09', 0, 'Filled'),
+(24,   4, 24, '2025-09-15', 0, 'Expired'),
+(25,   5, 25, '2025-10-22', 1, 'Active'),
+(26,   6, 26, '2025-11-03', 0, 'Filled'),
+(27,   7, 27, '2025-12-18', 4, 'Active'),
+(28,   8, 28, '2026-01-07', 0, 'Filled'),
+(29,   9, 29, '2026-01-25', 2, 'Active'),
+(30,  10, 30, '2026-02-10', 0, 'Filled'),
+(31,  11, 31, '2026-02-28', 0, 'Cancelled'),
+(32,  12, 32, '2026-03-05', 1, 'Active'),
+(33,  13, 33, '2026-03-15', 0, 'Filled'),
+(34,  14, 34, '2026-03-20', 3, 'Active'),
+(35,  15, 35, '2026-03-25', 0, 'Filled'),
+(36,  16, 36, '2026-03-28', 0, 'Active'),
+(37,  17, 37, '2026-04-01', 2, 'Active'),
+(38,  18, 38, '2026-04-03', 0, 'Filled'),
+(39,  19, 39, '2026-04-05', 0, 'Active'),
+(40,  20, 40, '2026-04-07', 1, 'Active'),
+(41,   1, 41, '2025-01-20', 0, 'Filled'),
+(42,   2, 42, '2025-02-28', 0, 'Expired'),
+(43,   3, 43, '2025-03-12', 2, 'Active'),
+(44,   4, 44, '2025-04-18', 0, 'Filled'),
+(45,   5, 45, '2025-05-22', 1, 'Active'),
+(46,   6, 46, '2025-06-30', 0, 'Filled'),
+(47,   7, 47, '2025-07-14', 0, 'Cancelled'),
+(48,   8, 48, '2025-08-20', 3, 'Active'),
+(49,   9, 49, '2025-09-05', 0, 'Filled'),
+(50,  10, 50, '2025-10-10', 2, 'Active');
+
+-- ============================================================
+-- prescription_line (~90 rows)
+-- ============================================================
+INSERT INTO prescription_line (prescription_id, medication_id, quantity_prescribed, dosage_instructions) VALUES
+-- Rx 1 – Pt 1 (Shellfish): Lisinopril + Atorvastatin
+(1,  4,  30, 'Take 1 tablet daily for blood pressure'),
+(1,  6,  30, 'Take 1 tablet daily in the evening for cholesterol'),
+
+-- Rx 2 – Pt 2 (Grass): Metformin for diabetes
+(2,  5,  60, 'Take 1 tablet twice daily with meals'),
+
+-- Rx 3 – Pt 3 (None): Omeprazole + Metoprolol
+(3,  13, 30, 'Take 1 capsule daily before breakfast'),
+(3,  38, 30, 'Take 1 tablet daily for heart rate'),
+
+-- Rx 4 – Pt 4 (Aspirin): Lisinopril only (no aspirin-class meds)
+(4,  4,  30, 'Take 1 tablet daily'),
+
+-- Rx 5 – Pt 5 (Ibuprofen – avoid MED 2): Atorvastatin + Metformin + Lisinopril
+(5,  6,  30, 'Take 1 tablet daily for cholesterol'),
+(5,  5,  60, 'Take 1 tablet twice daily with meals'),
+(5,  4,  30, 'Take 1 tablet daily for blood pressure'),
+
+-- Rx 6 – Pt 6 (Grass): Sertraline for depression
+(6,  15, 30, 'Take 1 tablet daily in the morning'),
+
+-- Rx 7 – Pt 7 (Peanuts): Gabapentin (cancelled, included for record completeness)
+(7,  26, 60, 'Take 1 capsule three times daily for nerve pain'),
+
+-- Rx 8 – Pt 8 (Latex): Omeprazole + Levothyroxine
+(8,  13, 30, 'Take 1 capsule daily before breakfast'),
+(8,  9,  30, 'Take 1 tablet daily on an empty stomach'),
+
+-- Rx 9 – Pt 9 (Latex): Albuterol inhaler
+(9,  49,  1, 'Use 2 puffs every 4–6 hours as needed for shortness of breath'),
+
+-- Rx 10 – Pt 10 (Grass): Metformin + Insulin Glargine
+(10, 5,  60, 'Take 1 tablet twice daily with meals'),
+(10, 31, 10, 'Inject 10 units subcutaneously at bedtime'),
+
+-- Rx 11 – Pt 11 (Ibuprofen – avoid MED 2): Fluoxetine
+(11, 14, 30, 'Take 1 capsule daily in the morning'),
+
+-- Rx 12 – Pt 12 (Penicillin – avoid MED 3,48): Azithromycin + Prednisone
+(12, 43, 6,  'Take 1 tablet daily for 5 days (Z-pack)'),
+(12, 41, 21, 'Take as directed; taper dose over 3 weeks'),
+
+-- Rx 13 – Pt 13 (Acetaminophen – avoid MED 1): Lisinopril + Losartan
+(13, 4,  30, 'Take 1 tablet daily for blood pressure'),
+(13, 8,  30, 'Take 1 tablet daily for blood pressure'),
+
+-- Rx 14 – Pt 14 (Latex): Sertraline + Omeprazole
+(14, 15, 30, 'Take 1 tablet daily'),
+(14, 13, 30, 'Take 1 capsule daily before breakfast'),
+
+-- Rx 15 – Pt 15 (Bees): Lisinopril + Metoprolol + Warfarin
+(15, 4,  30, 'Take 1 tablet daily for blood pressure'),
+(15, 38, 30, 'Take 1 tablet daily for heart rate'),
+(15, 12, 30, 'Take 1 tablet daily; monitor INR regularly'),
+
+-- Rx 16 – Pt 16 (None): Atorvastatin
+(16, 6,  30, 'Take 1 tablet daily in the evening'),
+
+-- Rx 17 – Pt 17 (Shellfish): Metformin + Amlodipine
+(17, 5,  60, 'Take 1 tablet twice daily with meals'),
+(17, 7,  30, 'Take 1 tablet daily for blood pressure'),
+
+-- Rx 18 – Pt 18 (Aspirin): Omeprazole
+(18, 13, 30, 'Take 1 capsule daily before breakfast'),
+
+-- Rx 19 – Pt 19 (Penicillin – avoid MED 3,48): Furosemide (cancelled)
+(19, 34, 30, 'Take 1 tablet daily in the morning'),
+
+-- Rx 20 – Pt 20 (Ibuprofen – avoid MED 2): Lisinopril + Metformin + Levothyroxine
+(20, 4,  30, 'Take 1 tablet daily'),
+(20, 5,  60, 'Take 1 tablet twice daily with meals'),
+(20, 9,  30, 'Take 1 tablet daily on an empty stomach'),
+
+-- Rx 21 – Pt 21 (Bees): Fluoxetine
+(21, 14, 30, 'Take 1 capsule daily in the morning'),
+
+-- Rx 22 – Pt 22 (Aspirin): Atorvastatin + Metoprolol
+(22, 6,  30, 'Take 1 tablet daily in the evening'),
+(22, 38, 30, 'Take 1 tablet daily'),
+
+-- Rx 23 – Pt 23 (Bees): Doxycycline
+(23, 46, 14, 'Take 1 capsule twice daily for 7 days'),
+
+-- Rx 24 – Pt 24 (Pollen): Escitalopram (expired)
+(24, 16, 30, 'Take 1 tablet daily in the morning'),
+
+-- Rx 25 – Pt 25 (Ants): Gabapentin + Tramadol
+(25, 26, 90, 'Take 1 capsule three times daily for nerve pain'),
+(25, 23, 30, 'Take 1 tablet every 6 hours as needed for pain'),
+
+-- Rx 26 – Pt 26 (Ants): Ciprofloxacin
+(26, 44, 14, 'Take 1 tablet twice daily for 7 days'),
+
+-- Rx 27 – Pt 27 (None): Metformin + Lisinopril + Atorvastatin
+(27, 5,  60, 'Take 1 tablet twice daily with meals'),
+(27, 4,  30, 'Take 1 tablet daily'),
+(27, 6,  30, 'Take 1 tablet daily in the evening'),
+
+-- Rx 28 – Pt 28 (Penicillin – avoid MED 3,48): Warfarin
+(28, 12, 30, 'Take 1 tablet daily; monitor INR weekly'),
+
+-- Rx 29 – Pt 29 (Grass): Amlodipine + Hydrochlorothiazide
+(29, 7,  30, 'Take 1 tablet daily for blood pressure'),
+(29, 35, 30, 'Take 1 tablet daily in the morning'),
+
+-- Rx 30 – Pt 30 (Peanuts): Furosemide + Digoxin
+(30, 34, 30, 'Take 1 tablet daily in the morning'),
+(30, 40, 30, 'Take 1 tablet daily; monitor heart rate'),
+
+-- Rx 31 – Pt 31 (Pollen): Sertraline (cancelled)
+(31, 15, 30, 'Take 1 tablet daily in the morning'),
+
+-- Rx 32 – Pt 32 (Ants): Levothyroxine
+(32, 9,  30, 'Take 1 tablet daily on an empty stomach'),
+
+-- Rx 33 – Pt 33 (Penicillin – avoid MED 3,48): Azithromycin
+(33, 43, 6,  'Take 1 tablet daily for 5 days'),
+
+-- Rx 34 – Pt 34 (Aspirin): Metformin + Losartan
+(34, 5,  60, 'Take 1 tablet twice daily with meals'),
+(34, 8,  30, 'Take 1 tablet daily'),
+
+-- Rx 35 – Pt 35 (Bees): Omeprazole + Clopidogrel
+(35, 13, 30, 'Take 1 capsule daily before breakfast'),
+(35, 11, 30, 'Take 1 tablet daily to prevent blood clots'),
+
+-- Rx 36 – Pt 36 (None): Escitalopram + Bupropion
+(36, 16, 30, 'Take 1 tablet daily in the morning'),
+(36, 30, 30, 'Take 1 tablet daily; avoid alcohol'),
+
+-- Rx 37 – Pt 37 (Peanuts): Metoprolol + Lisinopril
+(37, 38, 30, 'Take 1 tablet daily'),
+(37, 4,  30, 'Take 1 tablet daily for blood pressure'),
+
+-- Rx 38 – Pt 38 (Latex): Sertraline
+(38, 15, 30, 'Take 1 tablet daily in the morning'),
+
+-- Rx 39 – Pt 39 (Acetaminophen – avoid MED 1): Prednisone
+(39, 41, 10, 'Take as directed; do not stop abruptly'),
+
+-- Rx 40 – Pt 40 (Ants): Albuterol + Ventolin (backup inhaler)
+(40, 49,  1, 'Use 2 puffs every 4–6 hours as needed'),
+(40, 50,  1, 'Use as directed by physician'),
+
+-- Rx 41 – Pt 41 (Latex): Escitalopram
+(41, 16, 30, 'Take 1 tablet daily in the morning'),
+
+-- Rx 42 – Pt 42 (Peanuts): Metformin (expired)
+(42, 5,  60, 'Take 1 tablet twice daily with meals'),
+
+-- Rx 43 – Pt 43 (Bees): Amoxicillin (no penicillin allergy)
+(43, 3,  21, 'Take 1 capsule three times daily for 7 days'),
+
+-- Rx 44 – Pt 44 (Latex): Prednisone + Azithromycin
+(44, 41, 6,  'Take as directed; short-course burst'),
+(44, 43, 6,  'Take 1 tablet daily for 5 days'),
+
+-- Rx 45 – Pt 45 (Peanuts): Albuterol
+(45, 49,  1, 'Use 2 puffs every 4–6 hours as needed for wheezing'),
+
+-- Rx 46 – Pt 46 (None): Lisinopril + Atorvastatin
+(46, 4,  30, 'Take 1 tablet daily for blood pressure'),
+(46, 6,  30, 'Take 1 tablet daily in the evening'),
+
+-- Rx 47 – Pt 47 (Ants): Omeprazole (cancelled)
+(47, 13, 30, 'Take 1 capsule daily before breakfast'),
+
+-- Rx 48 – Pt 48 (Grass): Sertraline + Alprazolam
+(48, 15, 30, 'Take 1 tablet daily'),
+(48, 20, 30, 'Take 0.5 mg as needed for anxiety; max 3x daily'),
+
+-- Rx 49 – Pt 49 (Ibuprofen – avoid MED 2): Levothyroxine
+(49, 9,  30, 'Take 1 tablet daily on an empty stomach'),
+
+-- Rx 50 – Pt 50 (Acetaminophen – avoid MED 1): Metformin + Metoprolol
+(50, 5,  60, 'Take 1 tablet twice daily with meals'),
+(50, 38, 30, 'Take 1 tablet daily for heart rate');
+
+-- ============================================================
+-- fills
+-- Cancelled RxIDs (no fills): 7, 19, 31, 47
+-- ============================================================
+INSERT INTO fills (prescription_id, pharmacist_id, fills_date, fill_number, notes) VALUES
+-- Filled prescriptions (status = 'Filled')
+(2,   3,  '2025-02-21', 1, 'Original fill dispensed'),
+(6,   7,  '2025-05-13', 1, 'Original fill dispensed'),
+(9,   1,  '2025-07-08', 1, 'Patient counseled on inhaler technique'),
+(11,  5,  '2025-09-23', 1, 'Original fill dispensed'),
+(14,  9,  '2025-11-12', 1, 'Patient counseled on sertraline side effects'),
+(16,  2,  '2025-01-09', 1, 'Original fill dispensed'),
+(18,  11, '2025-03-26', 1, 'Original fill dispensed'),
+(21,  6,  '2025-06-06', 1, 'Original fill dispensed'),
+(23,  14, '2025-08-10', 1, 'Short-course antibiotic; patient counseled'),
+(26,  4,  '2025-11-04', 1, 'Original fill dispensed; patient counseled on side effects'),
+(28,  8,  '2026-01-08', 1, 'INR baseline documented; patient counseled on warfarin diet'),
+(30,  15, '2026-02-11', 1, 'Original fill dispensed'),
+(33,  3,  '2026-03-16', 1, 'Short-course antibiotic dispensed'),
+(35,  10, '2026-03-26', 1, 'Original fill dispensed'),
+(38,  17, '2026-04-04', 1, 'Original fill dispensed'),
+(41,  12, '2025-01-21', 1, 'Original fill dispensed'),
+(44,  20, '2025-04-19', 1, 'Steroid burst + antibiotic combo dispensed'),
+(46,  6,  '2025-07-01', 1, 'Original fill dispensed'),
+(49,  2,  '2025-09-06', 1, 'Original fill dispensed'),
+
+-- Expired prescriptions (had fills before expiration)
+(4,   16, '2024-11-06', 1, 'Original fill dispensed before expiration'),
+(12,  7,  '2024-10-31', 1, 'Original fill dispensed; prescription subsequently expired'),
+(24,  9,  '2025-09-16', 1, 'Original fill dispensed; prescription subsequently expired'),
+(42,  13, '2025-03-01', 1, 'Original fill dispensed before expiration'),
+
+-- Active prescriptions – first fill already dispensed
+(1,   18, '2025-01-16', 1, 'Original fill dispensed'),
+(3,   4,  '2025-03-11', 1, 'Original fill dispensed'),
+(5,   1,  '2025-04-02', 1, 'Original fill dispensed; patient counseled on metformin GI effects'),
+(8,   19, '2025-06-19', 1, 'Original fill dispensed'),
+(10,  5,  '2025-08-15', 1, 'Original fill dispensed; insulin injection technique reviewed'),
+(13,  16, '2025-10-06', 1, 'Original fill dispensed'),
+(15,  3,  '2025-12-02', 1, 'Original fill dispensed; INR monitoring schedule set'),
+(17,  11, '2025-02-15', 1, 'Original fill dispensed'),
+(20,  8,  '2025-05-18', 1, 'Original fill dispensed'),
+(22,  20, '2025-07-21', 1, 'Original fill dispensed'),
+(25,  14, '2025-10-23', 1, 'Tramadol – Schedule IV; photo ID verified'),
+(27,  7,  '2025-12-19', 1, 'Original fill dispensed'),
+(29,  2,  '2026-01-26', 1, 'Original fill dispensed'),
+(32,  15, '2026-03-06', 1, 'Original fill dispensed'),
+(34,  9,  '2026-03-21', 1, 'Original fill dispensed'),
+(36,  6,  '2026-03-29', 1, 'Original fill dispensed; patient counseled on bupropion'),
+(37,  4,  '2026-04-02', 1, 'Original fill dispensed'),
+(43,  18, '2025-03-13', 1, 'Amoxicillin dispensed; patient counseled to finish course'),
+(45,  1,  '2025-05-23', 1, 'Patient counseled on rescue inhaler use'),
+(48,  12, '2025-08-21', 1, 'Alprazolam – Schedule IV; photo ID verified'),
+(50,  17, '2025-10-11', 1, 'Original fill dispensed');
