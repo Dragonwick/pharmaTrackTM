@@ -145,6 +145,18 @@ CREATE TABLE fills (
         FOREIGN KEY (pharmacist_id) REFERENCES pharmacist(pharmacist_id)
 );
 
+-- ============================================================
+-- PharmaTrack: Combined Insert File
+-- Tables inserted in dependency order:
+--   inventory → doctor → pharmacist → patient →
+--   medication → prescription → prescription_line → fills
+-- ============================================================
+
+USE pharmatrack;
+
+-- ============================================================
+-- inventory (50 rows)
+-- ============================================================
 INSERT INTO inventory (inventory_id, medication_name, ndc_code, generic_name, dosage_form, strength) VALUES
 (1, 'TYLENOL', '50580-488-01', 'ACETAMINOPHEN', 'TABLET', '500MG'),
 (2, 'ADVIL', '0573-0164-30', 'IBUPROFEN', 'TABLET', '200MG'),
@@ -197,80 +209,9 @@ INSERT INTO inventory (inventory_id, medication_name, ndc_code, generic_name, do
 (49, 'ALBUTEROL', '00093-7461-01', 'ALBUTEROL', 'INHALER', '90MCG'),
 (50, 'VENTOLIN', '00093-7462-01', 'ALBUTEROL', 'INHALER', '90MCG');
 
-INSERT INTO medication (medication_id, lot_number, expiration_date, quantity_in_stock, unit_price, manufacturer, inventory_id) VALUES
-(1, '001', '2027-05-12', 150, 8.99, 'Pfizer', 1),
-(2, '002', '2026-11-03', 200, 5.49, 'Johnson & Johnson', 2),
-(3, '003', '2028-01-20', 120, 12.75, 'Merck', 3),
-(4, '004', '2027-08-15', 300, 3.99, 'Bayer', 4),
-(5, '005', '2026-06-10', 180, 6.25, 'Novartis', 5),
-(6, '006', '2027-12-01', 220, 9.99, 'Roche', 6),
-(7, '007', '2028-03-18', 140, 15.50, 'Sanofi', 7),
-(8, '008', '2026-09-25', 260, 4.75, 'AbbVie', 8),
-(9, '009', '2027-04-30', 175, 7.20, 'GSK', 9),
-(10, '010', '2028-07-11', 130, 11.80, 'Amgen', 10),
-(11, '011', '2027-02-14', 210, 10.25, 'Pfizer', 11),
-(12, '012', '2026-10-08', 190, 5.99, 'Merck', 12),
-(13, '013', '2028-05-22', 160, 14.40, 'Bayer', 13),
-(14, '014', '2027-09-13', 240, 6.75, 'Novartis', 14),
-(15, '015', '2026-12-29', 170, 8.10, 'Sanofi', 15),
-(16, '016', '2028-02-17', 150, 13.60, 'Roche', 16),
-(17, '017', '2027-06-05', 300, 4.20, 'AbbVie', 17),
-(18, '018', '2026-08-19', 280, 3.50, 'GSK', 18),
-(19, '019', '2027-11-27', 200, 9.40, 'Pfizer', 19),
-(20, '020', '2028-04-06', 145, 16.75, 'Amgen', 20),
-(21, '021', '2027-01-09', 230, 7.90, 'Johnson & Johnson', 21),
-(22, '022', '2026-07-23', 260, 5.60, 'Bayer', 22),
-(23, '023', '2028-06-14', 180, 18.30, 'Merck', 23),
-(24, '024', '2027-03-02', 210, 9.10, 'Novartis', 24),
-(25, '025', '2026-11-30', 195, 6.45, 'Sanofi', 25),
-(26, '026', '2028-08-21', 155, 20.00, 'Roche', 26),
-(27, '027', '2027-05-17', 175, 11.25, 'AbbVie', 27),
-(28, '028', '2026-09-09', 240, 4.95, 'GSK', 28),
-(29, '029', '2027-12-12', 220, 10.60, 'Pfizer', 29),
-(30, '030', '2028-02-28', 165, 17.80, 'Amgen', 30),
-(31, '031', '2027-04-03', 200, 8.35, 'Johnson & Johnson', 31),
-(32, '032', '2026-10-19', 210, 5.75, 'Bayer', 32),
-(33, '033', '2028-07-07', 150, 19.90, 'Merck', 33),
-(34, '034', '2027-01-25', 260, 7.80, 'Novartis', 34),
-(35, '035', '2026-06-18', 180, 6.95, 'Sanofi', 35),
-(36, '036', '2028-03-30', 140, 22.10, 'Roche', 36),
-(37, '037', '2027-08-08', 170, 12.40, 'AbbVie', 37),
-(38, '038', '2026-12-05', 230, 4.10, 'GSK', 38),
-(39, '039', '2027-09-21', 210, 9.85, 'Pfizer', 39),
-(40, '040', '2028-05-01', 160, 18.60, 'Amgen', 40),
-(41, '041', '2027-02-11', 190, 7.55, 'Johnson & Johnson', 41),
-(42, '042', '2026-08-27', 250, 5.20, 'Bayer', 42),
-(43, '043', '2028-06-03', 130, 21.75, 'Merck', 43),
-(44, '044', '2027-03-15', 200, 8.60, 'Novartis', 44),
-(45, '045', '2026-11-11', 220, 6.10, 'Sanofi', 45),
-(46, '046', '2028-01-29', 155, 23.50, 'Roche', 46),
-(47, '047', '2027-06-22', 180, 13.75, 'AbbVie', 47),
-(48, '048', '2026-09-14', 240, 4.65, 'GSK', 48),
-(49, '049', '2027-12-03', 210, 10.95, 'Pfizer', 49),
-(50, '050', '2028-04-18', 170, 19.25, 'Amgen', 50);
-
-INSERT INTO pharmacist (pharmacist_id, first_name, last_name, license_number, phone, email) VALUES
-(1, 'Pamela', 'House', 'TX-RPH-5501', '9565551001', 'phouse@pharmatrack.com'),
-(2, 'Belinda', 'Peters', 'TX-RPH-5502', '9565551002', 'bpeters@pharmatrack.com'),
-(3, 'Brenda', 'Johnson', 'TX-RPH-5503', '9565551003', 'bjohnson@pharmatrack.com'),
-(4, 'Benjamin', 'Thomas', 'TX-RPH-5504', '9565551004', 'bthomas@pharmatrack.com'),
-(5, 'John', 'Williams', 'TX-RPH-5505', '9565551005', 'jwilliams@pharmatrack.com'),
-(6, 'Michelle', 'Mills', 'TX-RPH-5506', '9565551006', 'mmills@pharmatrack.com'),
-(7, 'Samantha', 'Perez', 'TX-RPH-5507', '9565551007', 'sperez@pharmatrack.com'),
-(8, 'Douglas', 'Simpson', 'TX-RPH-5508', '9565551008', 'dsimpson@pharmatrack.com'),
-(9, 'Stacy', 'Myers', 'TX-RPH-5509', '9565551009', 'smyers@pharmatrack.com'),
-(10, 'Matthew', 'Peters', 'TX-RPH-5510', '9565551010', 'mpeters@pharmatrack.com'),
-(11, 'Audrey', 'Watson', 'TX-RPH-5511', '9565551011', 'awatson@pharmatrack.com'),
-(12, 'Nicole', 'Crawford', 'TX-RPH-5512', '9565551012', 'ncrawford@pharmatrack.com'),
-(13, 'Timothy', 'Sullivan', 'TX-RPH-5513', '9565551013', 'tsullivan@pharmatrack.com'),
-(14, 'Charles', 'Barrett', 'TX-RPH-5514', '9565551014', 'cbarrett@pharmatrack.com'),
-(15, 'Kristina', 'Huff', 'TX-RPH-5515', '9565551015', 'khuff@pharmatrack.com'),
-(16, 'Melanie', 'Brown', 'TX-RPH-5516', '9565551016', 'mbrown@pharmatrack.com'),
-(17, 'Troy', 'Carter', 'TX-RPH-5517', '9565551017', 'tcarter@pharmatrack.com'),
-(18, 'Taylor', 'Miller', 'TX-RPH-5518', '9565551018', 'tmiller@pharmatrack.com'),
-(19, 'Michelle', 'King', 'TX-RPH-5519', '9565551019', 'mking@pharmatrack.com'),
-(20, 'Robert', 'Smith', 'TX-RPH-5520', '9565551020', 'rsmith@pharmatrack.com');
-
+-- ============================================================
+-- doctor (20 rows)
+-- ============================================================
 INSERT INTO doctor (doctor_id, first_name, last_name, license_number, phone, email, clinic_name) VALUES
 (1, 'John', 'Craig', 'TX-MD-10021', '2105554821', 'jcraig@alamoheightsclinic.com', 'Alamo Heights Family Clinic'),
 (2, 'Eric', 'Fisher', 'TX-MD-10022', '5125559034', 'efisher@lonestarmedical.org', 'Lone Star Medical Center'),
@@ -293,6 +234,34 @@ INSERT INTO doctor (doctor_id, first_name, last_name, license_number, phone, ema
 (19, 'Cheryl', 'Ford', 'TX-MD-10039', '2545559932', 'cford@mesquitespringshealth.com', 'Mesquite Springs Health Clinic'),
 (20, 'Andrew', 'Patrick', 'TX-MD-10040', '9155557714', 'apatrick@windcrestfamilycare.org', 'Windcrest Family Care');
 
+-- ============================================================
+-- pharmacist (20 rows)
+-- ============================================================
+INSERT INTO pharmacist (pharmacist_id, first_name, last_name, license_number, phone, email) VALUES
+(1, 'Pamela', 'House', 'TX-RPH-5501', '9565551001', 'phouse@pharmatrack.com'),
+(2, 'Belinda', 'Peters', 'TX-RPH-5502', '9565551002', 'bpeters@pharmatrack.com'),
+(3, 'Brenda', 'Johnson', 'TX-RPH-5503', '9565551003', 'bjohnson@pharmatrack.com'),
+(4, 'Benjamin', 'Thomas', 'TX-RPH-5504', '9565551004', 'bthomas@pharmatrack.com'),
+(5, 'John', 'Williams', 'TX-RPH-5505', '9565551005', 'jwilliams@pharmatrack.com'),
+(6, 'Michelle', 'Mills', 'TX-RPH-5506', '9565551006', 'mmills@pharmatrack.com'),
+(7, 'Samantha', 'Perez', 'TX-RPH-5507', '9565551007', 'sperez@pharmatrack.com'),
+(8, 'Douglas', 'Simpson', 'TX-RPH-5508', '9565551008', 'dsimpson@pharmatrack.com'),
+(9, 'Stacy', 'Myers', 'TX-RPH-5509', '9565551009', 'smyers@pharmatrack.com'),
+(10, 'Matthew', 'Peters', 'TX-RPH-5510', '9565551010', 'mpeters@pharmatrack.com'),
+(11, 'Audrey', 'Watson', 'TX-RPH-5511', '9565551011', 'awatson@pharmatrack.com'),
+(12, 'Nicole', 'Crawford', 'TX-RPH-5512', '9565551012', 'ncrawford@pharmatrack.com'),
+(13, 'Timothy', 'Sullivan', 'TX-RPH-5513', '9565551013', 'tsullivan@pharmatrack.com'),
+(14, 'Charles', 'Barrett', 'TX-RPH-5514', '9565551014', 'cbarrett@pharmatrack.com'),
+(15, 'Kristina', 'Huff', 'TX-RPH-5515', '9565551015', 'khuff@pharmatrack.com'),
+(16, 'Melanie', 'Brown', 'TX-RPH-5516', '9565551016', 'mbrown@pharmatrack.com'),
+(17, 'Troy', 'Carter', 'TX-RPH-5517', '9565551017', 'tcarter@pharmatrack.com'),
+(18, 'Taylor', 'Miller', 'TX-RPH-5518', '9565551018', 'tmiller@pharmatrack.com'),
+(19, 'Michelle', 'King', 'TX-RPH-5519', '9565551019', 'mking@pharmatrack.com'),
+(20, 'Robert', 'Smith', 'TX-RPH-5520', '9565551020', 'rsmith@pharmatrack.com');
+
+-- ============================================================
+-- patient (200 rows)
+-- ============================================================
 INSERT INTO patient (patient_id, first_name, last_name, date_of_birth, phone, email, street, city, state, zip_code, allergies) VALUES
 (1, 'Kevin', 'Browning', '2016-01-28', '8063300190', 'kevin.browning@gmail.com', '715 David Stream Apt. 032', 'Amarillo', 'TX', '79101', 'Shellfish'),
 (2, 'Jennifer', 'Sloan', '1937-10-22', '3618088296', 'jennifer.sloan@hotmail.com', '05393 Hurst Isle Suite 214', 'Corpus Christi', 'TX', '78401', 'Grass'),
@@ -496,23 +465,62 @@ INSERT INTO patient (patient_id, first_name, last_name, date_of_birth, phone, em
 (200, 'Stephen', 'Schultz', '1956-10-10', '8062450621', 'stephen.schultz@yahoo.com', '3395 Erin Points', 'Lubbock', 'TX', '79401', 'Ants');
 
 -- ============================================================
--- PharmaTrack: Prescription Data Insert
--- File: insert_prescription.sql
--- Tables: prescription, prescription_line, fills
--- Notes:
---   - doctor_id range:      1–20
---   - patient_id range:     1–200
---   - medication_id range:  1–50
---   - pharmacist_id range:  1–20
---   - Allergy conflicts avoided (Ibuprofen→MED 2, Acetaminophen→MED 1,
---     Penicillin→MED 48 & MED 3)
---   - status values: 'Active', 'Filled', 'Expired', 'Cancelled'
+-- medication (50 rows)
 -- ============================================================
-
-USE pharmatrack;
+INSERT INTO medication (medication_id, lot_number, expiration_date, quantity_in_stock, unit_price, manufacturer, inventory_id) VALUES
+(1, '001', '2027-05-12', 150, 8.99, 'Pfizer', 1),
+(2, '002', '2026-11-03', 200, 5.49, 'Johnson & Johnson', 2),
+(3, '003', '2028-01-20', 120, 12.75, 'Merck', 3),
+(4, '004', '2027-08-15', 300, 3.99, 'Bayer', 4),
+(5, '005', '2026-06-10', 180, 6.25, 'Novartis', 5),
+(6, '006', '2027-12-01', 220, 9.99, 'Roche', 6),
+(7, '007', '2028-03-18', 140, 15.50, 'Sanofi', 7),
+(8, '008', '2026-09-25', 260, 4.75, 'AbbVie', 8),
+(9, '009', '2027-04-30', 175, 7.20, 'GSK', 9),
+(10, '010', '2028-07-11', 130, 11.80, 'Amgen', 10),
+(11, '011', '2027-02-14', 210, 10.25, 'Pfizer', 11),
+(12, '012', '2026-10-08', 190, 5.99, 'Merck', 12),
+(13, '013', '2028-05-22', 160, 14.40, 'Bayer', 13),
+(14, '014', '2027-09-13', 240, 6.75, 'Novartis', 14),
+(15, '015', '2026-12-29', 170, 8.10, 'Sanofi', 15),
+(16, '016', '2028-02-17', 150, 13.60, 'Roche', 16),
+(17, '017', '2027-06-05', 300, 4.20, 'AbbVie', 17),
+(18, '018', '2026-08-19', 280, 3.50, 'GSK', 18),
+(19, '019', '2027-11-27', 200, 9.40, 'Pfizer', 19),
+(20, '020', '2028-04-06', 145, 16.75, 'Amgen', 20),
+(21, '021', '2027-01-09', 230, 7.90, 'Johnson & Johnson', 21),
+(22, '022', '2026-07-23', 260, 5.60, 'Bayer', 22),
+(23, '023', '2028-06-14', 180, 18.30, 'Merck', 23),
+(24, '024', '2027-03-02', 210, 9.10, 'Novartis', 24),
+(25, '025', '2026-11-30', 195, 6.45, 'Sanofi', 25),
+(26, '026', '2028-08-21', 155, 20.00, 'Roche', 26),
+(27, '027', '2027-05-17', 175, 11.25, 'AbbVie', 27),
+(28, '028', '2026-09-09', 240, 4.95, 'GSK', 28),
+(29, '029', '2027-12-12', 220, 10.60, 'Pfizer', 29),
+(30, '030', '2028-02-28', 165, 17.80, 'Amgen', 30),
+(31, '031', '2027-04-03', 200, 8.35, 'Johnson & Johnson', 31),
+(32, '032', '2026-10-19', 210, 5.75, 'Bayer', 32),
+(33, '033', '2028-07-07', 150, 19.90, 'Merck', 33),
+(34, '034', '2027-01-25', 260, 7.80, 'Novartis', 34),
+(35, '035', '2026-06-18', 180, 6.95, 'Sanofi', 35),
+(36, '036', '2028-03-30', 140, 22.10, 'Roche', 36),
+(37, '037', '2027-08-08', 170, 12.40, 'AbbVie', 37),
+(38, '038', '2026-12-05', 230, 4.10, 'GSK', 38),
+(39, '039', '2027-09-21', 210, 9.85, 'Pfizer', 39),
+(40, '040', '2028-05-01', 160, 18.60, 'Amgen', 40),
+(41, '041', '2027-02-11', 190, 7.55, 'Johnson & Johnson', 41),
+(42, '042', '2026-08-27', 250, 5.20, 'Bayer', 42),
+(43, '043', '2028-06-03', 130, 21.75, 'Merck', 43),
+(44, '044', '2027-03-15', 200, 8.60, 'Novartis', 44),
+(45, '045', '2026-11-11', 220, 6.10, 'Sanofi', 45),
+(46, '046', '2028-01-29', 155, 23.50, 'Roche', 46),
+(47, '047', '2027-06-22', 180, 13.75, 'AbbVie', 47),
+(48, '048', '2026-09-14', 240, 4.65, 'GSK', 48),
+(49, '049', '2027-12-03', 210, 10.95, 'Pfizer', 49),
+(50, '050', '2028-04-18', 170, 19.25, 'Amgen', 50);
 
 -- ============================================================
--- prescription (50 records)
+-- prescription (50 rows)
 -- ============================================================
 INSERT INTO prescription (prescription_id, doctor_id, patient_id, date_issued, refills_remaining, status) VALUES
 (1,   1,  1,  '2025-01-15', 2, 'Active'),
@@ -567,16 +575,7 @@ INSERT INTO prescription (prescription_id, doctor_id, patient_id, date_issued, r
 (50,  10, 50, '2025-10-10', 2, 'Active');
 
 -- ============================================================
--- prescription_line (~90 records)
--- Allergy notes per patient referenced below:
---   Pt  2 (Grass),  Pt  4 (Aspirin), Pt  5 (Ibuprofen→avoid MED 2),
---   Pt 11 (Ibuprofen→avoid MED 2), Pt 12 (Penicillin→avoid MED 3,48),
---   Pt 13 (Acetaminophen→avoid MED 1), Pt 18 (Aspirin),
---   Pt 19 (Penicillin→avoid MED 3,48), Pt 20 (Ibuprofen→avoid MED 2),
---   Pt 22 (Aspirin), Pt 28 (Penicillin→avoid MED 3,48),
---   Pt 33 (Penicillin→avoid MED 3,48), Pt 34 (Aspirin),
---   Pt 39 (Acetaminophen→avoid MED 1), Pt 49 (Ibuprofen→avoid MED 2),
---   Pt 50 (Acetaminophen→avoid MED 1)
+-- prescription_line (~90 rows)
 -- ============================================================
 INSERT INTO prescription_line (prescription_id, medication_id, quantity_prescribed, dosage_instructions) VALUES
 -- Rx 1 – Pt 1 (Shellfish): Lisinopril + Atorvastatin
@@ -760,12 +759,7 @@ INSERT INTO prescription_line (prescription_id, medication_id, quantity_prescrib
 
 -- ============================================================
 -- fills
--- Fill records exist for all non-Cancelled prescriptions.
 -- Cancelled RxIDs (no fills): 7, 19, 31, 47
--- Expired RxIDs may have had fills before expiration: 4, 12, 24, 42
--- Active RxIDs with prior fills (fill_number = 1 shows first fill):
---   1, 3, 5, 8, 10, 13, 15, 17, 20, 22, 25, 27, 29, 32, 34, 36,
---   37, 39, 40, 43, 45, 48, 50
 -- ============================================================
 INSERT INTO fills (prescription_id, pharmacist_id, fills_date, fill_number, notes) VALUES
 -- Filled prescriptions (status = 'Filled')
