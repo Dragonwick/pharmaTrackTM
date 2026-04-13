@@ -18,14 +18,4 @@ BEGIN
 END //
 DELIMITER ;
 
--- UPDATE TRIGGER: updates a patient's address
-DELIMITER //
-CREATE TRIGGER tr_update_address
-BEFORE UPDATE ON patient
-FOR EACH ROW
-BEGIN 
-	SET NEW.street = NEW.street;
-    SET NEW.city = NEW.city;
-    SET NEW.zip_code = NEW.zip_code;                
-END //
-DELIMITER ;
+
