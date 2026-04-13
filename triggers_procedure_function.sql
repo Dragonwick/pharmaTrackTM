@@ -73,10 +73,8 @@ DELETE FROM patient
 WHERE patient_id = 51;
 
 -- stored procedure: get_patient_summary
--- given a patient ID, returns all prescriptions for
--- 	that patient along with the medications prescribed
---  and the current status of each prescription.
--- inpu:  p_patient_id (INT) - the ID of the patient to look up
+-- given a patient ID, returns all prescriptions for that patient along with the medications prescribed and the current status of each prescription.
+-- input:  p_patient_id (INT) - the ID of the patient to look up
 -- usage:  CALL get_patient_summary(1);
 
 DROP PROCEDURE IF EXISTS get_patient_summary;
@@ -106,3 +104,32 @@ DELIMITER ;
 
 -- this is an example to retrieve full prescription summary for patient ID 1 (Kevin Browning)
 CALL get_patient_summary(1);
+
+-- funtion: get_prescription_total
+-- 	given a prescription id, calculate the total cost of all medicaitons on that prescription by multiplying quantity prescribed by unit price for each medicaiton.
+-- 	input : p_prescription_id (INT) - the prescription to calculate
+-- 	output: DECIMAL (10, 2) - this is the total cost of the prescription
+-- 	usage: SELECT get_prescription_total(1)
+
+DROP FUNCTION IF EXISTS get_prescription_total;
+
+DELIMITER //
+
+CREATE FUNCTION get_prescription_total(p_prescription_id INT)
+RETURNS DECIMAL (10, 2)
+DETERMINISTIC
+BEGIN
+	DECLARE total DECIMAL (10,2);
+    
+	SELECT SUM(pl.quantity_prescribed * m.unit_price)
+    INTO total
+    FROM prescription_line pl
+    JOIN medication m ON pl.medication_id = m.medication_id
+    WHERE pl.prescription_id = p_prescription_id;
+    
+    RETURN total;
+END //
+DELIMITER ;
+
+-- example to calculate the total cost of prescription ID 1
+SELECT get_prescription_total(1) AS "Prescription Total";
