@@ -1,5 +1,9 @@
-SELECT * FROM inventory
-JOIN medication ON inventory.inventory_id = medication.inventory_id;
+-- list medications with their inventory details
+SELECT m.medication_id, i.medication_name, m.quantity_in_stock, m.unit_price
+FROM medication m
+JOIN inventory i
+ON m.inventory_id = i.inventory_id
+ORDER BY i.medication_name;
 
 -- list patients with prescriptions and their counts
 SELECT p.patient_id, CONCAT(p.first_name, ' ', p.last_name) AS "Patient Name", COUNT(pr.prescription_id) AS "Number of Prescriptions"
@@ -8,12 +12,27 @@ JOIN prescription pr ON p.patient_id = pr.patient_id
 GROUP BY p.patient_id, p.first_name, p.last_name
 ORDER BY "Number of Prescriptions" DESC, "Patient Name";
 
--- find patients who currently have prescriptions using a subquery
+-- find patients with active prescription
 SELECT p.patient_id, CONCAT(p.first_name, ' ', p.last_name) AS "Patient Name", pr.prescription_id, pr.date_issued, pr.status
 FROM patient p
 JOIN prescription pr ON p.patient_id = pr.patient_id
 WHERE pr.status = "Active"
 ORDER BY p.patient_id, pr.date_issued DESC;
+
+-- find the medications with the highest and lowest quantity in stock
+SELECT i.medication_name, m.quantity_in_stock
+FROM medication m
+JOIN inventory i
+ON m.inventory_id = i.inventory_id
+WHERE m.quantity_in_stock = (
+    SELECT MAX(quantity_in_stock)
+    FROM medication
+)
+OR m.quantity_in_stock = (
+    SELECT MIN(quantity_in_stock)
+    FROM medication
+)
+ORDER BY m.quantity_in_stock DESC, i.medication_name;
 
 -- lists how many prescriptions each doctor has issued
 SELECT d.doctor_id, CONCAT(d.first_name, ' ', d.last_name) AS "Doctor Name", COUNT(p.prescription_id) AS "Total Prescriptions"
