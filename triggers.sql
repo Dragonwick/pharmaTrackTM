@@ -1,4 +1,4 @@
--- delete trigger that checks for a patients active prescriptions before deletion
+-- DELETE TRIGGER: checks for a patients active prescriptions before deletion
 DELIMITER //
 CREATE TRIGGER tr_patient_pres
 BEFORE DELETE
@@ -15,5 +15,17 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Failed to delete patient. Patient has at least one active prescription.';
     END IF;
+END //
+DELIMITER ;
+
+-- UPDATE TRIGGER: updates a patient's address
+DELIMITER //
+CREATE TRIGGER update_address
+BEFORE UPDATE ON patient
+FOR EACH ROW
+BEGIN 
+	SET NEW.street = NEW.street;
+    SET NEW.city = NEW.city;
+    SET NEW.zip_code = NEW.zip_code;                
 END //
 DELIMITER ;
