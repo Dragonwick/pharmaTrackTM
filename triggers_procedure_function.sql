@@ -30,7 +30,7 @@ SET @presc_id = LAST_INSERT_ID();
 INSERT INTO prescription_line (prescription_id, medication_id, quantity_prescribed, dosage_instructions)
 VALUES (@presc_id, @med_id, 30, 'Take one tablet daily');
 
--- UPDATE TRIGGER: prevents patients from updating their address to somewhere outside of Texas
+-- UPDATE TRIGGER: prevents from updating patient addresses to out of state
 DELIMITER //
 CREATE TRIGGER tr_texas_only
 BEFORE UPDATE ON patient
