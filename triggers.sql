@@ -20,7 +20,7 @@ DELIMITER ;
 
 -- UPDATE TRIGGER: updates a patient's address
 DELIMITER //
-CREATE TRIGGER update_address
+CREATE TRIGGER tr_update_address
 BEFORE UPDATE ON patient
 FOR EACH ROW
 BEGIN 
