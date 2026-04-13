@@ -31,4 +31,9 @@ BEGIN
 END //
 DELIMITER ;
 
+-- UPDATE TRIGGER EXAMPLE STATEMENT
+UPDATE patient
+SET state = 'CA'
+WHERE patient_id = 1;
+
 
