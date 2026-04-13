@@ -18,4 +18,17 @@ BEGIN
 END //
 DELIMITER ;
 
+-- UPDATE TRIGGER: does not allow patients to update their address to somewhere outside of texas
+DELIMITER //
+CREATE TRIGGER tr_texas_only
+BEFORE UPDATE ON patient
+FOR EACH ROW
+BEGIN
+    IF NEW.state <> 'TX' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Patients must reside in the state of Texas (TX)';
+    END IF;
+END //
+DELIMITER ;
+
 
