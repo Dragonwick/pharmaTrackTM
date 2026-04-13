@@ -18,6 +18,10 @@ BEGIN
 END //
 DELIMITER ;
 
+-- DELETE TRIGGER EXAMPLE STATEMENT
+DELETE FROM patient
+WHERE patient_id = 51;
+
 -- UPDATE TRIGGER: does not allow patients to update their address to somewhere outside of texas
 DELIMITER //
 CREATE TRIGGER tr_texas_only
