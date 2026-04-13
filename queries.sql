@@ -41,6 +41,7 @@ WHERE allergies IS NOT NULL AND allergies  != 'None'
 ORDER BY allergies;
 
 -- make a subquerey where we list patients who have never had a prescription filled
+
 -- find all patients who have been presrcibed a certain medication 
 SELECT DISTINCT p.patient_id, CONCAT(p.first_name, ' ', p.last_name) AS "Patient Name"
 FROM patient p
