@@ -44,9 +44,20 @@ END //
 DELIMITER ;
 
 -- UPDATE TRIGGER EXAMPLE STATEMENT
+-- error
 UPDATE patient
 SET state = 'CA'
 WHERE patient_id = 1;
+
+-- error
+UPDATE patient
+SET city = 'Denver', state = 'CO'
+WHERE patient_id = 3;
+
+-- no error
+UPDATE patient
+SET city = 'San Antonio', state = 'TX', zip_code = '78205'
+WHERE patient_id = 4;
 
 -- DELETE TRIGGER: checks for a patients active prescriptions before deletion
 DELIMITER //
